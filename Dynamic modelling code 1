@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Oct 17 13.00 2023
+Created on Tue Jan 17 13.00 2023
 # Contains the code for dynamic modelling of the following three reaction 
 #1) Ribulose-5-Phosphate  (R5P) → 3,4,Dihydroxy-2-butanone-4-phosphate (D2B4P) (enzyme is RibA) 
 #2) D2B4P → 6,7-Dimethyl-8-ribityl lumazine (D8RL) (Enzyme is RibH) 
