@@ -81,11 +81,9 @@ model Michaelis_Menten
   RibA + GTP -> GTP_RibA;                  (k1 * RibA * GTP);
   GTP_RibA -> RibA + GTP;                  (k1r * GTP_RibA);
   GTP_RibA -> RibA + DARPP;                (k2 * GTP_RibA);
- 
   RibD + DARPP -> DARPP_RibD;              (k1 * RibD * DARPP);
   DARPP_RibD -> RibD + DARPP;              (k1r * DARPP_RibD);
   DARPP_RibD -> RibD + ARPP;               (k2 * DARPP_RibD);
- 
   RibG + ARPP -> ARPP_RibG;                (k1 * RibG * ARPP);
   ARPP_RibG -> RibG + ARPP;                (k1r * ARPP_RibG);
   ARPP_RibG -> RibG + ArPP;                (k2 * ARPP_RibG);
@@ -97,7 +95,7 @@ model Michaelis_Menten
   ArP_RibH -> RibH + D8RL;                 (k2 * ArP_RibH);  
   RibA + R5P -> R5P_RibA;                  (k1 * RibA * R5P);
   R5P_RibA   -> RibA + R5P;                (k1r * R5P_RibA);
-  R5P_RibA   -> D2B4P;                     (k2 * R5P_RibA);
+  R5P_RibA   -> RibA + D2B4P;              (k2 * R5P_RibA);
   RibH + D2B4P -> D2B4P_RibH;              (k1 * RibH * D2B4P);
   D2B4P_RibH   -> RibH + D2B4P;            (k1r * D2B4P_RibH);
   D2B4P_RibH   -> RibH + D8RL;             (k2 * D2B4P_RibH);
