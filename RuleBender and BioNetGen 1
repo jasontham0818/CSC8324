@@ -13,11 +13,11 @@ end parameters
 begin seed species
       R5P(a)                  5e-7
       RibA(a)                 2e-7
-      D2B4P(a)          5e-7
+      D2B4P(a)                5e-7
       RibH(a)                 2e-7
       D8RL(a)                 5e-7
       RibE(a)                 2e-7
-      Riboflavin()      0
+      Riboflavin()            0
       
 end seed species
 
@@ -27,7 +27,7 @@ begin reaction rules
       # Binding and dissociation
       R5P(a) + RibA(a) <-> R5P(a!1).RibA(a!1)         k1, k1r
       D2B4P(a) + RibH(a) <-> D2B4P(a!1).RibH(a!1)     k1, k1r
-      D8RL(a) + RibE(a) <-> D8RL(a!1).RibE(a!1) k1, k1r
+      D8RL(a) + RibE(a) <-> D8RL(a!1).RibE(a!1)       k1, k1r
       # Production
       R5P(a!1).RibA(a!1) -> D2B4P(a) + RibA(a)        k2
       D2B4P(a!1).RibH(a!1) -> D8RL(a) + RibH(a)       k2
@@ -37,7 +37,7 @@ end reaction rules
 
 begin observables
       Molecules   RibA        RibA(a)
-      Molecules   R5P               R5P(a)
+      Molecules   R5P         R5P(a)
       Molecules   D2B4P       D2B4P(a)
       Molecules   R5P_RibA    R5P(a!1).RibA(a!1)
       Molecules   RibH        RibH(a)
