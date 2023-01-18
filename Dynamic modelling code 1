@@ -1,0 +1,85 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct 17 13.00 2023
+# Contains the code for dynamic modelling of the following three reaction 
+#1) Ribulose-5-Phosphate  (R5P) → 3,4,Dihydroxy-2-butanone-4-phosphate (D2B4P) (enzyme is RibA) 
+#2) D2B4P → 6,7-Dimethyl-8-ribityl lumazine (D8RL) (Enzyme is RibH) 
+#3) D8RL → Riboflavin (Enzyme is RibE) 
+
+@author: Paolo
+"""
+#Modified from MM.py
+
+# plotting utility from Tellurium documentation
+def my_plot(r, result, sizeX=6, sizeY=4):
+
+    import pylab as p
+
+    if result is None:
+        raise Exception("no simulation result")
+
+    # assume result is a standard numpy array
+
+    selections = r.timeCourseSelections
+
+    if len(result.shape) != 2 or result.shape[1] != len(selections):
+        raise Exception("simulation result columns not equal to number of selections,"
+                        "likely a simulation has not been run")
+
+    times = result[:,0]
+
+    p.figure(figsize=(sizeX, sizeY))
+   
+    for i in range(1, len(selections)):
+        series = result[:,i]
+        name = selections[i]
+        p.plot(times, series, label=str(name))
+       
+    p.legend()
+ 
+    p.show()
+
+
+import tellurium as te
+
+MM = '''
+model Michaelis_Menten
+ 
+  // Species initializations:
+  R5P  = 5e-7;
+  RibA = 2e-7;
+  R5P_RibA = 0;
+  D2B4P = 5e-7;
+  RibH = 2e-7;
+  D2B4P_RibH  = 0;
+  D8RL = 5e-7;
+  RibE = 2e-7;  
+  D8RL_RibE = 0;
+  Riboflavin = 0;
+ 
+  // Reactions:
+  RibA + R5P -> R5P_RibA;            (k1 * RibA * R5P);
+  R5P_RibA   -> RibA + R5P;          (k1r * R5P_RibA);
+  R5P_RibA   -> D2B4P;               (k2 * R5P_RibA);
+  RibH + D2B4P -> D2B4P_RibH;        (k1 * RibH * D2B4P);
+  D2B4P_RibH   -> RibH + D2B4P;      (k1r * D2B4P_RibH);
+  D2B4P_RibH   -> RibH + D8RL;       (k2 * D2B4P_RibH);
+  RibE + D8RL -> D8RL_RibE;          (k1 * RibE * D8RL);
+  D8RL_RibE   -> RibE + D8RL;        (k1r * D8RL_RibE);
+  D8RL_RibE   -> RibE + Riboflavin;  (k2 * D8RL_RibE);
+
+  // Variable initialization:
+  k1  = 1e6;
+  k1r = 1e-4;
+  k2  = 0.1;
+end'''
+
+r = te.loada(MM)
+result = r.simulate(0, 100, 1000)
+
+# plot the simulation output
+#r.plot()
+my_plot(r, result, sizeX=12, sizeY=8)
+
+# export to SBML
+#r.exportToSBML('MMant.xml', current = False)
