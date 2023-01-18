@@ -94,4 +94,4 @@ result = r.simulate(0, 100, 1000)
 my_plot(r, result, sizeX=12, sizeY=8)
 
 # export to SBML
-#r.exportToSBML('MMant.xml', current = False)
+#r.exportToSBML('MMant2.xml', current = False)
