@@ -1,0 +1,101 @@
+# A simple Michaelis-Menten enzymatic reaction
+#This code contains the following reaction for modelling 
+#1) Ribulose-5-Phosphate  (R5P) → 3,4,Dihydroxy-2-butanone-4-phosphate (D2B4P) (enzyme is RibA) 
+#2) D2B4P → 6,7-Dimethyl-8-ribityl lumazine (D8RL) (Enzyme is RibH) 
+#3) D8RL → Riboflavin (Enzyme is RibE) 
+#4) Riboflavin → FMN (Enzyme is RibC)  
+#5) FMN → FAD   (Enzyme is RibC) 
+#6) purine pathway
+
+begin parameters
+      k1          1e6
+      k1r         1e-4
+      k2          0.1
+end parameters
+
+
+begin seed species
+      GTP(a)                              5e-7
+      DARPP(a)                            0
+      RibD(a)                             2e-7
+      ARPP(a)                             0
+      RibG(a)                             2e-7
+      ArPP(a)                             0
+      UnknownPhosphatase(a)               2e-7
+      ArP(a)                              0
+      R5P(a)                              5e-7
+      RibA(a)                             2e-7
+      D2B4P(a)                            5e-7
+      RibH(a)                             2e-7
+      D8RL(a)                             5e-7
+      RibE(a)                             2e-7
+      Riboflavin(a)                       0
+      RibC(a)                             2e-7
+      FMN(a)                              0
+      FAD()                               0
+end seed species
+
+
+# the actual reactions
+begin reaction rules
+      # Binding and dissociation
+      GTP(a) + RibA(a) <-> GTP(a!1).RibA(a!1)                                                         k1, k1r
+      DARPP(a) + RibD(a) <-> DARPP(a!1).RibD(a!1)                                                     k1, k1r
+      ARPP(a) + RibG(a) <-> ARPP(a!1).RibG(a!1)                                                       k1, k1r
+      ArPP(a) + UnknownPhosphatase(a) <-> ArPP(a!1).UnknownPhosphatase(a!1)                           k1, k1r
+      ArP(a) + RibH(a) <-> ArP(a!1).RibH(a!1)                                                         k1, k1r
+      R5P(a) + RibA(a) <-> R5P(a!1).RibA(a!1)                                                         k1, k1r
+      D2B4P(a) + RibH(a) <-> D2B4P(a!1).RibH(a!1)                                                     k1, k1r
+      D8RL(a) + RibE(a) <-> D8RL(a!1).RibE(a!1)                                                       k1, k1r
+      Riboflavin(a) + RibC(a) <-> Riboflavin(a!1).RibC(a!1)                                           k1, k1r
+      FMN(a) + RibC(a) <-> FMN(a!1).RibC(a!1)                                                         k1, k1r
+      # Production
+      GTP(a!1).RibA(a!1) -> DARPP(a) + RibA(a)                                                        k2
+      DARPPP(a!1).RibD(a!1) -> ARPP(a) + RibD(a)                                                      k2
+      ARPP(a!1).RibG(a!1) -> ArPP(a) + RibG(a)                                                        k2
+      ArPP(a!1).UnknownPhosphatase(a!1) -> ArP(a) + UnknownPhosphatase(a)                             k2
+      ArP(a!1).RibH(a!1) -> D8RL(a) + RibH(a)                                                         k2
+      R5P(a!1).RibA(a!1) -> D2B4P(a) + RibA(a)                                                        k2
+      D2B4P(a!1).RibH(a!1) -> D8RL(a) + RibH(a)                                                       k2
+      D8RL(a!1).RibE(a!1) -> Riboflavin(a) + RibE(a)                                                  k2
+      Riboflavin(a!1).RibC(a!1) -> FMN(a) + RibC(a)                                                   k2
+      FMN(a!1).RibC(a!1) -> FAD() + RibC(a)                                                           k2
+end reaction rules
+
+
+begin observables
+      Molecules   GTP                                       GTP(a)
+      Molecules   DARPP                                     DARPP(a)
+      Molecules   GTP_RibA                                  GTP(a!1).RibA(a!1)
+      Molecules   RibD                                      RibD(a)
+      Molecules   DARPP_RibD                                DARPP(a!1).RibD(a!1)
+      Molecules   ARPP                                      ARPP(a)
+      Molecules   RibG                                      RibG(a)
+      Molecules   ARPP_RibG                                 ARPP(a!1).RibG(a!1)
+      Molecules   ArPP                                      ArPP(a)
+      Molecules   UnknownPhosphatase                        UnknownPhosphatase(a)
+      Molecules   ArPP_UnknownPhosphatase                   ArPP(a!1).UnknownPhosphatase(a!1)
+      Molecules   ArP                                       ArP(a)
+      Molecules   ArP_RibH                                  ArP(a!1).RibH(a!1)
+      Molecules   RibA                                      RibA(a)
+      Molecules   R5P                                       R5P(a)
+      Molecules   D2B4P                                     D2B4P(a)
+      Molecules   R5P_RibA                                  R5P(a!1).RibA(a!1)
+      Molecules   RibH                                      RibH(a)
+      Molecules   D8RL                                      D8RL(a)
+      Molecules   D2B4P_RibH                                D2B4P(a!1).RibH(a!1)
+      Molecules   RibE                                      RibE(a)
+      Molecules   Riboflavin                                Riboflavin(a)
+      Molecules   D8RL_RibE                                 D8RL(a!1).RibE(a!1)
+      Molecules   RibC                                      RibC(a)
+      Molecules   FMN                                       FMN(a)
+      Molecules   Riboflavin_RibC                           Riboflavin(a!1).RibC(a!1)
+      Molecules   FMN_RibC                                  FMN(a!1).RibC(a!1)
+      Molecules   FAD                                       FAD()
+end observables
+
+## actions ##
+generate_network({overwrite=>1})
+
+# Equilibration
+simulate_ode({t_end=>100,n_steps=>1000,atol=>1e-10,rtol=>1e-8,sparse=>1})
