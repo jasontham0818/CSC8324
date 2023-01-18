@@ -60,7 +60,7 @@ model Michaelis_Menten
   // Reactions:
   RibA + R5P -> R5P_RibA;            (k1 * RibA * R5P);
   R5P_RibA   -> RibA + R5P;          (k1r * R5P_RibA);
-  R5P_RibA   -> D2B4P;               (k2 * R5P_RibA);
+  R5P_RibA   -> RibA + D2B4P;        (k2 * R5P_RibA);
   RibH + D2B4P -> D2B4P_RibH;        (k1 * RibH * D2B4P);
   D2B4P_RibH   -> RibH + D2B4P;      (k1r * D2B4P_RibH);
   D2B4P_RibH   -> RibH + D8RL;       (k2 * D2B4P_RibH);
