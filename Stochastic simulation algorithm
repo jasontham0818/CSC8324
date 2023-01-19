@@ -1,0 +1,51 @@
+# A Stochastic Simulation Algorithm of reaction 1-3 with riboflavin being the product 
+begin parameters
+      c1          1.66e-3
+      c1r         1.66e-13
+      c2          0.1
+end parameters
+
+
+begin seed species
+      R5P(a)                  301
+      RibA(a)                 120
+      D2B4P(a)                301
+      RibH(a)                 120
+      D8RL(a)                 301
+      RibE(a)                 120
+      Riboflavin()             0
+#volume is set to 1e-15 
+end seed species
+
+
+# the actual reactions
+begin reaction rules
+      # Binding and dissociation
+      R5P(a) + RibA(a) <-> R5P(a!1).RibA(a!1)         c1, c1r
+      D2B4P(a) + RibH(a) <-> D2B4P(a!1).RibH(a!1)     c1, c1r
+      D8RL(a) + RibE(a) <-> D8RL(a!1).RibE(a!1)       c1, c1r
+      # Production
+      R5P(a!1).RibA(a!1) -> D2B4P(a) + RibA(a)        c2
+      D2B4P(a!1).RibH(a!1) -> D8RL(a) + RibH(a)       c2
+      D8RL(a!1).RibE(a!1) -> Riboflavin() + RibE(a)   c2
+end reaction rules
+
+
+begin observables
+      Molecules   RibA        RibA(a)
+      Molecules   R5P         R5P(a)
+      Molecules   D2B4P       D2B4P(a)
+      Molecules   R5P_RibA    R5P(a!1).RibA(a!1)
+      Molecules   RibH        RibH(a)
+      Molecules   D8RL        D8RL(a)
+      Molecules   D2B4P_RibH  D2B4P(a!1).RibH(a!1)
+      Molecules   RibE        RibE(a)
+      Molecules   Riboflavin  Riboflavin()
+      Molecules   D8RL_RibE   D8RL(a!1).RibE(a!1)
+end observables
+
+## actions ##
+generate_network({overwrite=>1})
+
+#ssa simulation
+simulate_ssa({t_end=>100,n_steps=>1000})
