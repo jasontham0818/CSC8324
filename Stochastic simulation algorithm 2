@@ -1,4 +1,4 @@
-# A simple Michaelis-Menten enzymatic reaction
+# SSA simulation of riboflavin bionsynthesis and metabolism of riboflavin
 begin parameters
       c1          1.66e-3
       c1r         1.66e-13
